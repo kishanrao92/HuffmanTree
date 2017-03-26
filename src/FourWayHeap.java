@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class FourWayHeap<T extends Comparable<T>>
+public class FourWayHeap<T extends Comparable<T>> implements Heap<T>
 {
 	private ArrayList<T> heap;
 	

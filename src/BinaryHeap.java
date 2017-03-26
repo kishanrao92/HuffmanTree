@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class BinaryHeap<T extends Comparable<T>> 
+public class BinaryHeap<T extends Comparable<T>> implements Heap<T>
 {
 
   private ArrayList<T> theHeap;

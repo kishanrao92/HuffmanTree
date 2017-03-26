@@ -3,7 +3,7 @@ public class Runner
 {
 	public static void main(String args[])
 	{
-		FourWayHeap<Integer> heapOne = new FourWayHeap<Integer>();
+		Heap<Integer> heapOne = new FourWayHeap<Integer>();
 		heapOne.insert(12);
 		heapOne.insert(2);
 		heapOne.insert(52);
