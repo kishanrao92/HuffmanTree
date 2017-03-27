@@ -1,88 +1,88 @@
+/**
+ * Created by Kishan_Rao on 3/25/17.
+ */
+
+
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 
-public class BinaryHeap<T extends Comparable<T>> implements Heap<T>
-{
+public class BinaryHeap<T extends Comparable<T>> implements Heap<T>{
 
-  private ArrayList<T> theHeap;
+    public ArrayList<T> heap;
 
-	private final int sign;
+    public BinaryHeap()
+    {
+        heap=new ArrayList<T>();
+    }
 
-	protected final int left(int i) { return (i << 1) + 1; }
-	protected final int right(int i) { return (i << 1) + 2; }
-	protected final int parent(int i) { return ((i - 1) >> 1); }
+    public int leftChild(int position)
+    {
+        return (2*position + 1);
+    }
 
-	private void heapify(int i) 
-	{
-		int j = i;
-		int l = left(i);
-		int r = right(i);
-		if(l < theHeap.size() && (sign == theHeap.get(l).compareTo(theHeap.get(j))))
-			j = l;
-		if(r < theHeap.size() && (sign == theHeap.get(r).compareTo(theHeap.get(j))))
-			j = r;
-		if(j != i) {
-			swap(i, j);
-			heapify(j);
-		}
-	}
+    public int rightChild(int position)
+    {
+        return (2*position + 2);
+    }
 
-	protected BinaryHeap(int sign)
-	{
-		this.sign = sign;
-		theHeap = new ArrayList<T>();
-	}
+    public int parent(int position){
+        return (position-1)/2;
+    }
 
-	protected BinaryHeap(int sign, Collection<T> contents) 
-	{
-		this.sign = sign;
-		theHeap = new ArrayList<T>(contents);
-		for(int i = 1 + theHeap.size() / 2; i >= 0; i--) 
-		{
-			heapify(i);
-		}
-	}
+    public int size(){
+        return heap.size();
+    }
 
-	public int size() 
-	{
-		return theHeap.size();
-	}
+    public void insert(T node)
+    {
+        heap.add(node);
+        int i=heap.size()-1;
+        int p=parent(i);
 
-	private void swap(int i, int j) 
-	{
-		T temp = theHeap.get(j);
-		theHeap.set(j, theHeap.get(i));
-		theHeap.set(i, temp);
-	}
+        while(i>0 && heap.get(i).compareTo(heap.get(p))<0 )
+        {
+            Collections.swap(heap,i,p);
+            i=p;
+            p=parent(i);
 
-	public void insert(T t) 
-	{
-		theHeap.add(t);
-		int i = theHeap.size() - 1;
-		int p = parent(i);
-		while(i > 0 && (sign == theHeap.get(i).compareTo(theHeap.get(p)))) {
-			swap(i, p);
-			i = p;
-			p = parent(i);
-		}
-	}
+        }
 
-	public T remove() 
-	{
-		T result = null;
-		if(theHeap.size() > 0) {
-			result = theHeap.remove(0);
-			if(theHeap.size() > 1) {
-				theHeap.add(0, theHeap.remove(theHeap.size() -1));
-				heapify(0);
-			}
-		}
-		return result;
-	}
+    }
 
-	@Override
-	public String toString() 
-	{
-		return theHeap.toString();
-	}
+    public void heapify(int position)
+    {
+        int i=position;
+        int left=leftChild(i);
+        int right=rightChild(i);
+
+        if(left<heap.size() && heap.get(left).compareTo(heap.get(i))<1){
+            i=left;
+        }
+
+        if(right<heap.size() && heap.get(right).compareTo(heap.get(i))<1){
+            i=right;
+        }
+        if(i!=position)
+        {
+            Collections.swap(heap,i,position);
+            heapify(i);
+        }
+    }
+
+    public T remove()
+    {
+        T res=null;
+        if(heap.size()>0)
+        {
+            res=heap.remove(0);
+            if(heap.size()>1)
+            {
+                heap.add(0,heap.remove(heap.size()-1));
+                heapify(0);
+            }
+        }
+        return res;
+
+    }
+
 }
