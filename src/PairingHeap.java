@@ -23,7 +23,7 @@ public class PairingHeap<T extends Comparable<T>> implements Heap<T>
 	@Override
 	public void insert(T t) 
 	{
-		// TODO Auto-generated method stub
+
 		if(root == null)
 			root = t;
 		else

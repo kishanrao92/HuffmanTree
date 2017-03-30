@@ -1,25 +1,56 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
 
 public class Runner 
 {
-	public static void main(String args[])
+	public static void main(String args[]) throws IOException
 	{
-		Heap<Integer> heapOne = new PairingHeap<Integer>();
-		heapOne.insert(12);
-		//System.out.println("12\t" + heapOne.size());
-		heapOne.insert(2);
-		//System.out.println("2\t" + heapOne.size());
-		heapOne.insert(52);
-		//System.out.println("52\t" + heapOne.size());
-		heapOne.insert(42);
-		//System.out.println("42\t" + heapOne.size());
-		heapOne.insert(22);
-		//System.out.println("22\t" + heapOne.size());
-		heapOne.insert(9);
-		//System.out.println("9\t" + heapOne.size());
 		
-		while(heapOne.size() > 0)
+		HashMap<String,Integer> map=new HashMap<String,Integer>();
+		BufferedReader br=new BufferedReader(new FileReader("sample_input_small.txt"));
+		String line=null;
+		while((line=br.readLine())!=null)
 		{
-			System.out.println(heapOne.remove());
+			if(map.containsKey(line)){
+				map.put(line,map.get(line)+1);
+			}
+			else{
+				map.put(line,1);
+			}
 		}
+		br.close();
+		
+		//Build the tree now
+		
+		HuffmanTree left_child;
+        HuffmanTree right_child;
+        HuffmanTree result;
+        
+        Heap<HuffmanNode> heap = new PairingHeap<HuffmanNode>();
+        
+        for(String c: map.keySet())
+        {
+            if(c!=null)
+                heap.insert(new HuffmanNode( new HuffmanTree(c, map.get(c)) ));
+        }
+        //Heap ready yaay!
+
+        while(heap.size() > 1)
+        {
+        	//HuffmanNode aNode = heap.remove();
+        	left_child = heap.remove().root;
+        	right_child = heap.remove().root;
+        	result = new HuffmanTree("--", left_child.frequency + right_child.frequency);
+        	result.left = left_child;
+        	result.right = right_child;
+        	heap.insert(new HuffmanNode(result));
+        }
+        
+        HuffmanTree theTree = heap.remove().root;
+		theTree.bermudezPrint();
+		HuffmanTreeEncoder.encode(theTree);
 	}
 }
